@@ -9,7 +9,7 @@
     <ProductVersion>10.0.20506</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <RootNamespace></RootNamespace>
-    <ProjectGuid>{9FFA8360-0BBF-7AA7-0617-18280CA03E00}</ProjectGuid>
+    <ProjectGuid>{DDFBC18F-9396-3137-9CFE-DEB2CDB74636}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <AssemblyName>Assembly-CSharp</AssemblyName>
@@ -60,13 +60,33 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\Custom\AssetManager\AssetManagerSetup.cs" />
     <Compile Include="Assets\Framework\AssetManager\Scripts\AssetBundleManager\AssetBundleInfo.cs" />
     <Compile Include="Assets\Framework\AssetManager\Scripts\AssetBundleManager\AssetBundleLoader.cs" />
     <Compile Include="Assets\Framework\AssetManager\Scripts\AssetBundleManager\AssetBundleManager.cs" />
+    <Compile Include="Assets\Framework\AssetManager\Scripts\AssetBundleManager\AssetBundleTable.cs" />
+    <Compile Include="Assets\Framework\AssetManager\Scripts\AssetBundleManager\BundleTableAsset.cs" />
+    <Compile Include="Assets\Framework\AssetManager\Scripts\AssetBundleManager\VariantMapper.cs" />
     <Compile Include="Assets\Framework\AssetManager\Scripts\AssetManager.cs" />
     <Compile Include="Assets\Framework\AssetManager\Scripts\Interface\IAssetLoader.cs" />
+    <Compile Include="Assets\Framework\AssetManager\Scripts\Utils\AssetInfo.cs" />
     <Compile Include="Assets\Framework\AssetManager\Scripts\Utils\CacheInfo.cs" />
+    <Compile Include="Assets\Framework\AssetManager\Scripts\Utils\FilePath.cs" />
     <Compile Include="Assets\Framework\AssetManager\Scripts\Utils\SpriteCollection.cs" />
+    <Compile Include="Assets\Framework\AssetManager\Scripts\Utils\Utils.cs" />
+    <Compile Include="Assets\Framework\Base\AssetPathDefine.cs" />
+    <Compile Include="Assets\Framework\Base\GameSetting.cs" />
+    <Compile Include="Assets\Framework\Base\Plugins\LitJson\IJsonWrapper.cs" />
+    <Compile Include="Assets\Framework\Base\Plugins\LitJson\JsonData.cs" />
+    <Compile Include="Assets\Framework\Base\Plugins\LitJson\JsonException.cs" />
+    <Compile Include="Assets\Framework\Base\Plugins\LitJson\JsonMapper.cs" />
+    <Compile Include="Assets\Framework\Base\Plugins\LitJson\JsonMockWrapper.cs" />
+    <Compile Include="Assets\Framework\Base\Plugins\LitJson\JsonReader.cs" />
+    <Compile Include="Assets\Framework\Base\Plugins\LitJson\JsonWriter.cs" />
+    <Compile Include="Assets\Framework\Base\Plugins\LitJson\Lexer.cs" />
+    <Compile Include="Assets\Framework\Base\Plugins\LitJson\Netstandard15Polyfill.cs" />
+    <Compile Include="Assets\Framework\Base\Plugins\LitJson\ParserToken.cs" />
+    <Compile Include="Assets\Framework\Base\StringUtil.cs" />
     <Compile Include="Assets\Framework\Singleton.cs" />
     <Compile Include="Assets\Script\Net\Client.cs" />
     <Compile Include="Assets\Script\Net\Message.cs" />
@@ -75,19 +95,19 @@
     <Compile Include="Assets\Script\Settings.cs" />
     <Compile Include="Assets\Script\Src\Common\ByteBuffer.cs" />
     <Reference Include="Unity.TextMeshPro.Editor">
-      <HintPath>F:/Myself/MyGame/Library/ScriptAssemblies/Unity.TextMeshPro.Editor.dll</HintPath>
+      <HintPath>E:/Game/Library/ScriptAssemblies/Unity.TextMeshPro.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.PackageManagerUI.Editor">
-      <HintPath>F:/Myself/MyGame/Library/ScriptAssemblies/Unity.PackageManagerUI.Editor.dll</HintPath>
+      <HintPath>E:/Game/Library/ScriptAssemblies/Unity.PackageManagerUI.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.CollabProxy.Editor">
-      <HintPath>F:/Myself/MyGame/Library/ScriptAssemblies/Unity.CollabProxy.Editor.dll</HintPath>
+      <HintPath>E:/Game/Library/ScriptAssemblies/Unity.CollabProxy.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.TextMeshPro">
-      <HintPath>F:/Myself/MyGame/Library/ScriptAssemblies/Unity.TextMeshPro.dll</HintPath>
+      <HintPath>E:/Game/Library/ScriptAssemblies/Unity.TextMeshPro.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Analytics.DataPrivacy">
-      <HintPath>F:/Myself/MyGame/Library/ScriptAssemblies/Unity.Analytics.DataPrivacy.dll</HintPath>
+      <HintPath>E:/Game/Library/ScriptAssemblies/Unity.Analytics.DataPrivacy.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.AIModule">
       <HintPath>E:/Unity/2018418/Editor/Data/Managed/UnityEngine/UnityEngine.AIModule.dll</HintPath>
@@ -291,7 +311,10 @@
       <HintPath>E:/Unity/2018418/Editor/Data/UnityExtensions/Unity/UnitySpatialTracking/RuntimeEditor/UnityEngine.SpatialTracking.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Analytics.StandardEvents">
-      <HintPath>F:/Myself/MyGame/Library/PackageCache/com.unity.analytics@3.2.3/AnalyticsStandardEvents/Unity.Analytics.StandardEvents.dll</HintPath>
+      <HintPath>E:/Game/Library/PackageCache/com.unity.analytics@3.2.3/AnalyticsStandardEvents/Unity.Analytics.StandardEvents.dll</HintPath>
+    </Reference>
+    <Reference Include="ICSharpCode.SharpZipLib">
+      <HintPath>E:/Game/Assets/Framework/Base/Plugins/ICSharpCode.SharpZipLib.dll</HintPath>
     </Reference>
     <Reference Include="netstandard">
       <HintPath>E:/Unity/2018418/Editor/Data/NetStandard/ref/2.0.0/netstandard.dll</HintPath>
@@ -641,7 +664,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="Assembly-CSharp-firstpass.csproj">
-      <Project>{5F09F7A1-975A-D590-FB94-F41BC22D4455}</Project>
+      <Project>{D8888F6A-ABE1-C49B-1A38-F65A81021668}</Project>
       <Name>Assembly-CSharp-firstpass</Name>
     </ProjectReference>
   </ItemGroup>

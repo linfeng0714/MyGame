@@ -64,6 +64,14 @@ namespace Framework.AssetManager
             return this.Bundle.LoadAllAssets<T>();
         }
 
+        public T[] LoadAllAsset<T>() where T : Object
+        {
+            if (this.Bundle == null)
+                return null;
+
+            return this.Bundle.LoadAllAssets<T>();
+        }
+
         public IEnumerable LoadAssetAsync(string assetName, System.Action<Object> OnFinish)
         {
             if(this.Bundle == null)
