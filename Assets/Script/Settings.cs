@@ -14,7 +14,7 @@ public class Settings : MonoBehaviour
         else
             instance = this;
     }
-
+    // test git
     public static Vector3 GetPositionAroundPlayer(float radius)
     {
         Vector3 pos = instance.player.position;
