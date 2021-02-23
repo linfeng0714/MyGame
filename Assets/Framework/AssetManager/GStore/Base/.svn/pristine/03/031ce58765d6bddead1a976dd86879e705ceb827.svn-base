@@ -1,0 +1,508 @@
+﻿using UnityEngine;
+using System;
+using System.IO;
+using System.IO.Compression;
+using System.Collections;
+#if NETFX_CORE && UNITY_METRO && !UNITY_EDITOR    
+using File = MarkerMetro.Unity.WinLegacy.Plugin.IO.File;
+using Directory = MarkerMetro.Unity.WinLegacy.Plugin.IO.Directory;
+using MarkerMetro.Unity.WinLegacy;
+#else
+using File = System.IO.File;
+using Directory = System.IO.Directory;
+#endif
+using ICSharpCode.SharpZipLib.Zip;
+using ICSharpCode.SharpZipLib.Core;
+using ICSharpCode.SharpZipLib.GZip;
+namespace GStore
+{
+
+    public class ZipUtil
+    {
+        /// <summary>
+        /// 压缩包大小
+        /// </summary>
+        public static long allSize = 0;
+
+        /// <summary>
+        /// 当前解压文件的大小
+        /// </summary>
+        public static long curSize = 0;
+
+
+        #region 压缩
+        /// <summary>
+        /// 字节流压缩
+        /// </summary>
+        /// <param name="source">要压缩的字节流</param>
+        public static byte[] Zip(byte[] source, string fileName)
+        {
+            byte[] result = null;
+
+            MemoryStream streamWriter = new MemoryStream();
+
+            ZipOutputStream zos = new ZipOutputStream(streamWriter);
+            try
+            {
+                ZipEntry entry = new ZipEntry(fileName);
+                entry.IsUnicodeText = true;
+                zos.PutNextEntry(entry);
+                zos.Write(source, 0, source.Length);
+            }
+            catch (Exception ex)
+            {
+                Debug.LogError(ex.StackTrace);
+            }
+
+            try
+            {
+                zos.Finish();
+                zos.Close();
+            }
+            catch (Exception ex)
+            {
+                Debug.LogError(ex.StackTrace);
+            }
+
+            try
+            {
+                result = streamWriter.ToArray();
+            }
+            catch (Exception ex)
+            {
+                Debug.LogError(ex.StackTrace);
+            }
+
+            try
+            {
+                streamWriter.Close();
+            }
+            catch (Exception ex)
+            {
+                Debug.LogError(ex.StackTrace);
+            }
+
+            return result;
+        }
+        /// <summary>
+        /// 压缩一个目录
+        /// </summary>
+        /// <param name="sourcePath">源文件路径</param>
+        /// <param name="desPath">压缩后路径 path.</param>
+        /// <param name="isContainRoot">是否包含根目录</param>
+        /// <param name="isEncrypt">是否加密</param>
+        /// <param name="isRootLower">根目录是否小写</param>
+        public static void ZipDir(string sourcePath, string desPath, bool isContainRoot = true, bool isEncrypt = false, bool isRootLower = false)
+        {
+            if (sourcePath[sourcePath.Length - 1] != Path.DirectorySeparatorChar)
+            {
+                ZipOutputStream zipStream = new ZipOutputStream(File.Create(desPath));
+                //经测试2w个文件的压缩，使用level-9耗时1046秒，压到157m。使用level-6耗时146秒，压到158m。level-9性价比太低。
+                //zipStream.SetLevel(9);
+
+                string folder = sourcePath.Replace("\\", "/");
+                folder = folder.Substring(folder.LastIndexOf("/") + 1);
+                folder = folder + "/";
+
+                CreateZipFiles(sourcePath, zipStream, folder, isContainRoot, isEncrypt, isRootLower);
+
+                try
+                {
+                    zipStream.Finish();
+                    zipStream.Close();
+                }
+                catch (Exception ex)
+                {
+                    Debug.LogError(ex.StackTrace);
+                }
+
+            }
+        }
+
+        private static void CreateZipFiles(string sourcePath, ZipOutputStream zipStream, string folder, bool isContainRoot = true, bool isEncrypt = false, bool isRootLower = false)
+        {
+            string[] filesArray = Directory.GetFileSystemEntries(sourcePath);
+            foreach (string file in filesArray)
+            {
+                string extension = Path.GetExtension(file);
+                if (Directory.Exists(file)) //如果是文件夹，递归 
+                {
+                    if (extension.Equals(".svn"))//过滤svn
+                        continue;
+                    CreateZipFiles(file, zipStream, folder, isContainRoot, isEncrypt, isRootLower);
+                }
+                else //如果是文件，开始压缩 
+                {
+                    if (extension.Equals(".meta"))//过滤meta
+                        continue;
+                    if (extension.Equals(".DS_Store"))//过滤DS_Store
+                        continue;
+
+                    using (Stream fileStream = File.OpenRead(file))
+                    {
+                        byte[] buffer = new byte[fileStream.Length];
+                        fileStream.Read(buffer, 0, buffer.Length);
+                        string tempFile = file.Replace("\\", "/");
+                        //修改LastIndexOf为IndexOf，处理目录名结尾包含顶层目录名时裁剪路径错误的bug
+                        tempFile = tempFile.Substring(tempFile.IndexOf(folder));
+                        if (!isContainRoot)//如果不包含根目录，去除根目录
+                        {
+                            tempFile = tempFile.Substring(tempFile.IndexOf(folder) + folder.Length);
+                        }
+                        else
+                        {
+                            if (isRootLower)
+                            {
+                                tempFile = folder.ToLower() + tempFile.Substring(tempFile.IndexOf(folder) + folder.Length);
+                            }
+                        }
+                       
+                        ZipEntry entry = new ZipEntry(tempFile);
+                        entry.Size = fileStream.Length;
+                        zipStream.PutNextEntry(entry);
+                        if (isEncrypt)
+                        {
+                            buffer = EncryptTool.Encrypt(buffer);
+                        }
+                        zipStream.Write(buffer, 0, buffer.Length);
+                        fileStream.Close();
+                    }
+                }
+            }
+        }
+        #endregion
+
+        #region 解压
+        /// <summary>
+        /// 解压zip格式的文件。
+        /// </summary>
+        /// <param name="zipFilePath">压缩文件路径</param>
+        /// <param name="unZipDir">解压文件存放路径,为空时默认与压缩文件同一级目录下，跟压缩文件同名的文件夹</param>
+        /// <returns>解压是否成功</returns>
+        public static string UnZipFile(string zipFilePath, string unZipDir = null,bool isReplace = true)
+        {
+            if (string.IsNullOrEmpty(zipFilePath))
+            {
+                Debug.LogError("压缩文件不能为空！");
+                return "(ZipFilePath is Null)";
+            }
+            if (File.Exists(zipFilePath) == false)
+            {
+                Debug.LogError("压缩文件" + zipFilePath + "不存在！");
+                return "(Not find the file:" + zipFilePath + ")";
+            }
+            //zipFilePath = C:/Users/Administrator/AppData/LocalLow/Good/World II\zip_cache\1501060800_aa12576e-45a7-4bfe-880e-0f5b41533411.zip
+            //unZipDir = C:/Users/Administrator/AppData/LocalLow/Good/World II\http_res
+
+            //解压文件夹为空时默认与压缩文件同一级目录下，跟压缩文件同名的文件夹
+            if (string.IsNullOrEmpty(unZipDir))
+            {
+                unZipDir = zipFilePath.Replace(Path.GetFileName(zipFilePath), Path.GetFileNameWithoutExtension(zipFilePath));
+            }
+            if (!unZipDir.EndsWith("\\"))
+            {
+#if NETFX_CORE && UNITY_METRO && !UNITY_EDITOR
+     unZipDir += MarkerMetro.Unity.WinLegacy.Plugin.IO.Path.DirectorySeparatorChar;
+#else
+                unZipDir += Path.DirectorySeparatorChar;
+#endif
+                //unZipDir = C:/Users/Administrator/AppData/LocalLow/Good/World II\http_res\
+            }
+            if (!Directory.Exists(unZipDir))
+            {
+                Directory.CreateDirectory(unZipDir);
+            }
+#if NETFX_CORE && UNITY_METRO && !UNITY_EDITOR
+
+ return UnZipFile(MarkerMetro.Unity.WinLegacy.Plugin.IO.File.Open(zipFilePath), unZipDir,false);
+#else
+            return UnZipFile(File.OpenRead(zipFilePath), unZipDir, false,isReplace);
+#endif
+
+        }
+
+        /// <summary>
+        /// 解压字节流
+        /// </summary>
+        public static MemoryStream UnZip(byte[] source)
+        {
+            MemoryStream streamWriter = new MemoryStream();
+            ZipInputStream zis = null;
+            try
+            {
+                zis = new ZipInputStream(new MemoryStream(source));
+
+                // ZIP包中的每个文件
+                while (zis.GetNextEntry() != null)
+                {
+                    int buff_size = 2048, size = 0;
+                    byte[] data = new byte[buff_size];
+                    while (true)
+                    {
+                        size = zis.Read(data, 0, data.Length);
+                        if (size > 0)
+                        {
+                            streamWriter.Write(data, 0, size);
+                        }
+                        else
+                        {
+                            break;
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.LogError(ex.StackTrace);
+            }
+            finally
+            {
+                if (zis != null)
+                {
+                    try
+                    {
+                        zis.Close();        //zis 关闭流
+                    }
+                    catch (Exception ex)
+                    {
+                        Debug.LogWarning(ex.StackTrace);
+                    }
+                    zis = null;
+                }
+            }
+            streamWriter.Position = 0;
+            return streamWriter;
+        }
+
+        /// <summary>
+        /// 解压zip格式的文件。
+        /// </summary>
+        /// <param name="zipFilePath">要解壓縮的檔案串流</param>
+        /// <param name="unZipDir">解压文件存放路径</param>
+        /// <param name="isSafeSave">是否进行安全存储，安全储存使用(temp,File.Move/File.copy)方式，会安全但比较慢</param>
+        /// <returns>解压是否成功</returns>
+        public static string UnZipFile(Stream iStream, string unZipDir, bool isSafeSave,bool isReplace = true)
+        {
+            ZipInputStream zis = null;
+#if NETFX_CORE && UNITY_METRO && !UNITY_EDITOR
+        MarkerMetro.Unity.WinLegacy.Plugin.IO.FileStream streamWriter = null;     //streamWriter 开启流，    下面记得关
+#else
+            FileStream streamWriter = null;
+#endif
+            try
+            {
+                allSize = iStream.Length;
+                curSize = 0;
+
+                zis = new ZipInputStream(iStream);          //zis 开启流， 下面记得关
+
+                byte[] buffer = new byte[4096];
+
+                ZipEntry theEntry; //ZIP包中的每个文件
+                while ((theEntry = zis.GetNextEntry()) != null)
+                {
+                    //curSize += theEntry.CompressedSize;
+                    //theEntry.Name = data/combo/fly_emitter.xml
+                    string directoryName = Path.GetDirectoryName(theEntry.Name); //data/combo
+                    string fileName = Path.GetFileName(theEntry.Name); //fly_emitter.xml
+
+                    //检查目录是否存在
+                    if (directoryName == null)
+                    {
+#if UNITY_EDITOR
+                        Debug.LogError("目录为空，需要过滤，否则Combine会报错；另外服务器确定没压缩错误？");
+#endif
+
+                        continue;
+                    }
+
+                    //==================================================================//
+                    //安全防范，因为directoryName不能/开头
+                    if (directoryName.Length > 0)
+                    {
+                        if (directoryName.StartsWith("/"))
+                        {
+                            directoryName = directoryName.Substring(1);
+                        }
+                    }
+                    //==================================================================//
+
+                    string directoryPath = Path.Combine(unZipDir, directoryName); //C:/Users/Administrator/AppData/LocalLow/Good/World II\http_res\data/combo
+
+                    //                Debug.LogWarning("====> directoryPath="+directoryPath+",unZipDir="+unZipDir
+                    //                    +",directoryName="+directoryName+",fileName="+fileName+",theEntry.Name="+theEntry.Name);
+                    //要解压的目录不存在，则创建
+                    if (Directory.Exists(directoryPath) == false)
+                    {
+                        Directory.CreateDirectory(directoryPath);
+                    }
+
+                    //检查文件名
+                    if (string.IsNullOrEmpty(fileName))
+                    {
+                        continue;
+                    }
+
+                    //注意：先写入临时文件，成功之后再覆盖原有文件，然后删除临时文件
+                    string savePath = Path.Combine(directoryPath, fileName); //C:/Users/Administrator/AppData/LocalLow/Good/World II\http_res\data/combo/fly_emitter.xml
+                    if (!isReplace)
+                    {
+                        if (File.Exists(savePath))
+                        {
+                            continue;
+                        }
+                    }
+                    string tempPath; //C:/Users/Administrator/AppData/LocalLow/Good/World II\http_res\data/combo/fly_emitter.xml.temp
+                    if (isSafeSave)
+                    {
+                        tempPath = savePath + ".temp";
+                    }
+                    else
+                    {
+                        tempPath = savePath;
+                    }
+#if NETFX_CORE && UNITY_METRO && !UNITY_EDITOR
+
+                streamWriter = MarkerMetro.Unity.WinLegacy.Plugin.IO.File.Create(tempPath);      //streamWriter 开启流，    下面记得关
+#else
+                    streamWriter = File.Create(tempPath);        //streamWriter 开启流，    下面记得关
+#endif
+                    int size = 0;
+                    while (true)
+                    {
+                        size = zis.Read(buffer, 0, buffer.Length);
+                        curSize = zis.Position;
+                        if (size > 0)
+                        {
+                            streamWriter.Write(buffer, 0, size);
+                        }
+                        else
+                        {
+                            break;
+                        }
+                    }
+                    streamWriter.Close();       //streamWriter 关闭流， 因为下面的Copy需要往这个流开启的文件写东西， 所以现在必须关闭它， 否则会报错
+
+                    //注意：不要先删除原先的，再移动临时的，这样会有风险
+                    //所以用到下面1.或者2.方案确保安全
+
+                    if (isSafeSave)
+                    {
+                        //1.copy方案
+                        /*
+                        File.Copy(tempPath, savePath, true);
+                        if (File.Exists(tempPath))
+                        {
+                            File.Delete(tempPath);
+                        }
+                        */
+
+                        //2.move方案
+                        if (File.Exists(savePath))
+                        {
+                            File.Delete(savePath);
+                        }
+
+#if NETFX_CORE && UNITY_METRO && !UNITY_EDITOR
+                    MarkerMetro.Unity.WinLegacy.Plugin.IO.File.Move(tempPath, savePath);
+#else
+                        File.Move(tempPath, savePath);
+#endif
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                allSize = 0;
+                curSize = 0;
+                Debug.LogError(ex.Message + ", " + ex.StackTrace);
+
+                string error = ex.StackTrace;
+                if (string.IsNullOrEmpty(error) == false && error.Length > 100)
+                {
+                    return "(" + ex.Message + "\n" + error.Substring(0, 50) + "\n" + error.Substring(error.Length - 16, 16) + ")";
+                }
+                else
+                {
+                    return "(" + ex.Message + "\n" + error + ")";
+                }
+            }
+            finally
+            {
+                if (streamWriter != null)
+                {
+                    try
+                    {
+                        streamWriter.Close();                                //streamWriter 关闭流
+
+                    }
+                    catch (Exception ex)
+                    {
+                        Debug.LogWarning(ex.StackTrace);
+                    }
+                    streamWriter = null;
+                }
+
+                if (zis != null)
+                {
+                    try
+                    {
+                        zis.Close();        //zis 关闭流
+                    }
+                    catch (Exception ex)
+                    {
+                        Debug.LogWarning(ex.StackTrace);
+                    }
+                    zis = null;
+                }
+            }
+
+            allSize = 0;
+            curSize = 0;
+
+            return null;
+        }
+
+        public static string UnZipFileByBytes(byte[] bytes, string unZipDir, bool isSafeSave,bool isReplace = true)
+        {
+            if (bytes == null)
+            {
+                return "bytes为空";
+            }
+            else
+            {
+                System.IO.Stream stream = new System.IO.MemoryStream(bytes);
+                return UnZipFile(stream, unZipDir, isSafeSave,isReplace);
+            }
+        }
+
+        #endregion
+
+        /// <summary>
+        /// 加载一个文件以bytes形式
+        /// </summary>
+        /// <param name="filename"></param>
+        /// <returns></returns>
+        public static byte[] LoadBytes(string filename)
+        {
+#if NETFX_CORE && UNITY_METRO && !UNITY_EDITOR
+        using (Stream oStream = MarkerMetro.Unity.WinLegacy.Plugin.IO.File.OpenRead(filename))  
+#else
+            //第二种方案：读取明文
+            using (Stream oStream = File.OpenRead(filename))
+#endif
+
+            {
+                byte[] arrBytes = new byte[oStream.Length];
+                int offset = 0;
+                while (offset < arrBytes.Length)
+                {
+                    //其实只需要读取一次就行了oStream.Read(arrBytes, 0, arrBytes.Length)
+                    offset += oStream.Read(arrBytes, offset, arrBytes.Length - offset);
+                }
+                return arrBytes;
+            }
+        }
+    }
+}
+

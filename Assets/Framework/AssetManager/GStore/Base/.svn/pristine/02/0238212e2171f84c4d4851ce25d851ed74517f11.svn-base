@@ -1,0 +1,158 @@
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Runtime.InteropServices;
+using UnityEngine;
+
+/// <summary>
+/// CSV解析类
+/// </summary>
+public class CSVHelper
+{
+    public const string PATH_NAME = "Data/Table";
+
+    public static string Combine(string csv_name)
+    {
+        return Path.Combine(PATH_NAME, csv_name);
+    }
+
+    /// <summary>
+    /// 文本过滤器
+    /// </summary>
+    /// <param name="text"></param>
+    /// <param name="tablename"></param>
+    /// <returns></returns>
+    public delegate string TextFilter(string text, string tablename);
+    public static TextFilter textFilter = null;
+
+    /// <summary>
+    /// 数据加载委托
+    /// </summary>
+    public delegate byte[] LoadBytesHandler(string path);
+    public static LoadBytesHandler loadBytes { set; private get; }
+
+    public static byte[] GetBytes(string table_path)
+    {
+        if (loadBytes == null)
+        {
+            Debug.LogError("没有实现加载委托！请先设置loadBytes！");
+            return null;
+        }
+
+        return loadBytes(table_path);
+    }
+
+    #region 获取唯一键值
+    public static byte[] GetKey(int key1)
+    {
+        return BitConverter.GetBytes(key1);
+    }
+
+    public static byte[] GetKey(int key1, int key2)
+    {
+        byte[] bytes = new byte[8];
+        byte[] bytes1 = BitConverter.GetBytes(key1);
+        byte[] bytes2 = BitConverter.GetBytes(key2);
+        for (int i = 0; i < bytes.Length; i++)
+        {
+            if (i >= 0 && i < 4)
+            {
+                bytes[i] = bytes1[i];
+            }
+            else
+            {
+                bytes[i] = bytes2[i - 4];
+            }
+        }
+        return bytes;
+    }
+
+    public static byte[] GetKey(int key1, int key2, int key3)
+    {
+        byte[] bytes = new byte[12];
+        byte[] bytes1 = BitConverter.GetBytes(key1);
+        byte[] bytes2 = BitConverter.GetBytes(key2);
+        byte[] bytes3 = BitConverter.GetBytes(key3);
+        for (int i = 0; i < bytes.Length; i++)
+        {
+            if (i >= 0 && i < 4)
+            {
+                bytes[i] = bytes1[i];
+            }
+            else if (i >= 4 && i < 8)
+            {
+                bytes[i] = bytes2[i - 4];
+            }
+            else
+            {
+                bytes[i] = bytes3[i - 8];
+            }
+        }
+        return bytes;
+    }
+
+    public static byte[] GetKey(int key1, int key2, int key3, int key4)
+    {
+        byte[] bytes = new byte[16];
+        byte[] bytes1 = BitConverter.GetBytes(key1);
+        byte[] bytes2 = BitConverter.GetBytes(key2);
+        byte[] bytes3 = BitConverter.GetBytes(key3);
+        byte[] bytes4 = BitConverter.GetBytes(key4);
+        for (int i = 0; i < bytes.Length; i++)
+        {
+            if (i >= 0 && i < 4)
+            {
+                bytes[i] = bytes1[i];
+            }
+            else if (i >= 4 && i < 8)
+            {
+                bytes[i] = bytes2[i - 4];
+            }
+            else if (i >= 8 && i < 12)
+            {
+                bytes[i] = bytes3[i - 8];
+            }
+            else
+            {
+                bytes[i] = bytes4[i - 12];
+            }
+        }
+        return bytes;
+    }
+
+    public static byte[] GetKey(int key1, int key2, int key3, int key4, int key5)
+    {
+        byte[] bytes = new byte[20];
+        byte[] bytes1 = BitConverter.GetBytes(key1);
+        byte[] bytes2 = BitConverter.GetBytes(key2);
+        byte[] bytes3 = BitConverter.GetBytes(key3);
+        byte[] bytes4 = BitConverter.GetBytes(key4);
+        byte[] bytes5 = BitConverter.GetBytes(key5);
+        for (int i = 0; i < bytes.Length; i++)
+        {
+            if (i >= 0 && i < 4)
+            {
+                bytes[i] = bytes1[i];
+            }
+            else if (i >= 4 && i < 8)
+            {
+                bytes[i] = bytes2[i - 4];
+            }
+            else if (i >= 8 && i < 12)
+            {
+                bytes[i] = bytes3[i - 8];
+            }
+            else if (i >= 12 && i < 16)
+            {
+                bytes[i] = bytes4[i - 12];
+            }
+            else
+            {
+                bytes[i] = bytes5[i - 16];
+            }
+        }
+        return bytes;
+    }
+    #endregion
+
+}

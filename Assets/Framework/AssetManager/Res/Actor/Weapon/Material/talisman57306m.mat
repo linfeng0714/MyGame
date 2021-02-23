@@ -1,0 +1,128 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 6
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_Name: talisman57306m
+  m_Shader: {fileID: 4800000, guid: a3e14126f8d13ad40a7fa9d783547f40, type: 3}
+  m_ShaderKeywords: 
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _BumpMap:
+        m_Texture: {fileID: 2800000, guid: 26629b08be329ab4586fcf2d6aeaae5e, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _DetailAlbedoMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _DetailMask:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _DetailNormalMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _DissTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _EmissionMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MainTex:
+        m_Texture: {fileID: 2800000, guid: b9b505484dd3e754b8338d4057d5b685, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MatCapTex:
+        m_Texture: {fileID: 2800000, guid: de6b77f03906987489d2dd0376628dc1, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MetallicGlossMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _OcclusionMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _ParallaxMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _StoneTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _diffuse:
+        m_Texture: {fileID: 2800000, guid: 961d47b65c9495444a6d64adbb79ecb2, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _sge:
+        m_Texture: {fileID: 2800000, guid: 3a7f9af9e4ed3454ea52b28f52533ad2, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _stone_tex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Floats:
+    - _BumpScale: 1
+    - _Cutoff: 0.5
+    - _Cutout: 0
+    - _DetailNormalMapScale: 1
+    - _DissProgress: 0
+    - _DissSize: 0.1
+    - _DitherTransparency: 1
+    - _DstBlend: 0
+    - _GlossMapScale: 1
+    - _Glossiness: 0.5
+    - _GlossyReflections: 1
+    - _InvisibleRimPower: 0.8
+    - _InvisibleVisibility: 0.5
+    - _MatCapIntensity: 2.3
+    - _Metallic: 0
+    - _Mode: 0
+    - _NoDepthWrite: 0
+    - _OcclusionStrength: 1
+    - _Parallax: 0.02
+    - _SmoothnessTextureChannel: 0
+    - _SpecularHighlights: 1
+    - _SrcBlend: 1
+    - _StoneIntensity: 0
+    - _Transparency: 1
+    - _UVSec: 0
+    - _UseAlphaCutoff: 0
+    - _UseCutout: 0
+    - _UseDissolveEffect: 0
+    - _UseDitherTransparency: 0
+    - _UseInvisibleEffect: 0
+    - _UseStoneEffect: 0
+    - _UseTexTransparency: 0
+    - _UseTransparency: 0
+    - _ZWrite: 1
+    - _em2: 1.292027
+    - _gloss: 0.57
+    - _m2lerp: 0.49
+    - _spec: 2.87
+    - _stone_intensity: 0
+    m_Colors:
+    - _Color: {r: 1, g: 1, b: 1, a: 1}
+    - _DissEndColor: {r: 1, g: 0, b: 0, a: 1}
+    - _DissStartColor: {r: 1, g: 1, b: 0, a: 1}
+    - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
+    - _MatCapColor: {r: 0.37618944, g: 0.933564, b: 1, a: 1}
+    - _em3: {r: 0.7205882, g: 0.7205882, b: 0.7205882, a: 1}
+    - _spec5: {r: 0.30147058, g: 0.6242391, b: 1, a: 1}

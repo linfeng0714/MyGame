@@ -1,0 +1,151 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 6
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_Name: hero51022m
+  m_Shader: {fileID: 4800000, guid: a3e14126f8d13ad40a7fa9d783547f40, type: 3}
+  m_ShaderKeywords: _EMISSION _NORMALMAP
+  m_LightmapFlags: 1
+  m_EnableInstancingVariants: 1
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _BumpMap:
+        m_Texture: {fileID: 2800000, guid: c7cf1e1bb29dbbe4bb6fabfd698d3e81, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _DetailAlbedoMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _DetailMask:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _DetailNormalMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _DissTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _EmissionMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MainTex:
+        m_Texture: {fileID: 2800000, guid: c8b118ecdea986f409dc03e3dfa6e310, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MatCapTex:
+        m_Texture: {fileID: 2800000, guid: de6b77f03906987489d2dd0376628dc1, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MetallicGlossMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _NormalTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _OcclusionMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _ParallaxMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _RampTex:
+        m_Texture: {fileID: 2800000, guid: 18b5bc17bb3c166478e05d2ea6ab3ff2, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _SpecTex:
+        m_Texture: {fileID: 2800000, guid: c5147c37d2e8e374ba8ee73684ca7d1d, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _StoneTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _diffuse:
+        m_Texture: {fileID: 2800000, guid: 820a05d809bff5e419f0e264dffd5f66, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _sge:
+        m_Texture: {fileID: 2800000, guid: 51293644aac44c346b5a1b70d0eecb8d, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _stone_tex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Floats:
+    - _BumpScale: 1
+    - _Cutoff: 0.5
+    - _Cutout: 0
+    - _DetailNormalMapScale: 1
+    - _DiffIntensity: 1
+    - _DissProgress: 0
+    - _DissSize: 0.1
+    - _DitherTransparency: 1
+    - _DstBlend: 0
+    - _GlossMapScale: 1
+    - _Glossiness: 0.5
+    - _GlossyReflections: 1
+    - _InvisibleRimPower: 0.8
+    - _InvisibleVisibility: 0.5
+    - _MatCapIntensity: 2.1
+    - _Metallic: 0
+    - _Mode: 0
+    - _NoDepthWrite: 0
+    - _OcclusionStrength: 1
+    - _Parallax: 0.02
+    - _RimIntensity: 0.5
+    - _RimPower: 3
+    - _Shininess: 0.078125
+    - _SmoothnessTextureChannel: 0
+    - _SpecIntensity: 1.2
+    - _SpecPower: 3
+    - _SpecularHighlights: 1
+    - _SrcBlend: 1
+    - _StoneIntensity: 0
+    - _Transparency: 1
+    - _UVSec: 0
+    - _UseAlphaCutoff: 0
+    - _UseCutout: 0
+    - _UseDissolveEffect: 0
+    - _UseDitherTransparency: 0
+    - _UseInvisibleEffect: 0
+    - _UseStoneEffect: 0
+    - _UseTexTransparency: 0
+    - _UseTransparency: 0
+    - _ZWrite: 1
+    - _em2: 0.72
+    - _gloss: 0.38
+    - _m2lerp: 0.3
+    - _spec: 3.9
+    - _stone_intensity: 0
+    m_Colors:
+    - _Color: {r: 1, g: 1, b: 1, a: 1}
+    - _DissEndColor: {r: 1, g: 0, b: 0, a: 1}
+    - _DissStartColor: {r: 1, g: 1, b: 0, a: 1}
+    - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
+    - _LColor: {r: 1, g: 1, b: 1, a: 1}
+    - _MatCapColor: {r: 0.32156864, g: 0.827451, b: 0.8745098, a: 1}
+    - _NotVisibleColor: {r: 0, g: 0.39215687, b: 0.47058824, a: 1}
+    - _RimColor: {r: 0.9117647, g: 0.86774844, b: 0.80449826, a: 1}
+    - _SColor: {r: 0.2158845, g: 0.22935808, b: 0.24264705, a: 1}
+    - _SpecCol: {r: 0.50670415, g: 0.8746121, b: 0.9705882, a: 1}
+    - _em3: {r: 0.9764706, g: 0.80784315, b: 0.7490196, a: 1}
+    - _spec5: {r: 0, g: 0.67058825, b: 1, a: 1}

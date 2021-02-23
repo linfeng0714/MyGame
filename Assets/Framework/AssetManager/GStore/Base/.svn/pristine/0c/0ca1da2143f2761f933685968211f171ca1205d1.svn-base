@@ -1,0 +1,284 @@
+﻿using UnityEngine;
+
+namespace GStore
+{
+    /// <summary>
+    /// 资源目录定义
+    /// </summary>
+    public static class AssetPathDefine
+    {
+        public static string dataFolderName = "Data";
+        public static string dataFolderLower = dataFolderName.ToLower() + "/";
+        public static string NoHotUpdateDataZipName = "Data.zip";
+        public static string HotUpdateDataZipNamePrefix = "GUData";
+        public static string videoFolderName = "video";
+
+        public static string HotUpdateDataZipName
+        {
+            get { return string.Format("{0}.zip", HotUpdateDataZipNamePrefix); }
+        }
+
+        /// <summary>
+        /// 项目中存放资源的目录
+        /// </summary>
+        public static string resFolder
+        {
+            get { return "Assets/Res/"; }
+        }
+
+        /// <summary>
+        /// 资源存放的基本目录（持久化目录）
+        /// </summary>
+        public static string webBasePath
+        {
+            get
+            {
+#if UNITY_EDITOR || UNITY_STANDALONE
+                return Application.dataPath + "/../HotUpdate/";
+#else
+                return Application.persistentDataPath;
+#endif
+            }
+        }
+
+        /// <summary>
+        /// 存放下载资源的目录
+        /// </summary>
+        private static string m_ExternalFilePath = string.Empty;
+        public static string externalFilePath
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(m_ExternalFilePath))
+                {
+                    m_ExternalFilePath = System.IO.Path.Combine(webBasePath, "http_res");
+                }
+                return m_ExternalFilePath;
+            }
+        }
+
+        /// <summary>
+        /// 存放分包资源的目录
+        /// </summary>
+        private static string m_SubPackageFilePath = string.Empty;
+        public static string subPackageFilePath
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(m_SubPackageFilePath))
+                {
+                    m_SubPackageFilePath = System.IO.Path.Combine(webBasePath, "SubPackage");
+                }
+                return m_SubPackageFilePath;
+            }
+        }
+
+        /// <summary>
+        /// 存放数据文件的目录
+        /// </summary>
+        private static string m_ExternalDataPath = string.Empty;
+        public static string externalDataPath
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(m_ExternalDataPath))
+                {
+                    m_ExternalDataPath = System.IO.Path.Combine(externalFilePath, dataFolderName.ToLower());
+                }
+
+                return m_ExternalDataPath;
+            }
+        }
+
+        /// <summary>
+        /// 存放数据文件的目录 - 开发模式
+        /// </summary>
+        private static string m_DevelopDataPath = string.Empty;
+        public static string developDataPath
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(m_DevelopDataPath))
+                {
+                    m_DevelopDataPath = Application.dataPath + "/../../content/data";
+                }
+
+                return m_DevelopDataPath;
+            }
+        }
+
+        /// <summary>
+        /// 项目中数据文件路径
+        /// </summary>
+        private static string m_ProjectDataPath = string.Empty;
+        public static string projectDataPath
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(m_ProjectDataPath))
+                {
+                    m_ProjectDataPath = resFolder + dataFolderName;
+                }
+                return m_ProjectDataPath;
+            }
+        }
+
+        /// <summary>
+        /// Resources中的数据文件路径
+        /// </summary>
+        public static string resourcesDataPath
+        {
+            get { return "Assets/Resources/Data"; }
+        }
+
+        /// <summary>
+        /// 打包后的数据文件路径(非热更数据压缩包)
+        /// </summary>
+        private static string m_PackedDataPath = string.Empty;
+        public static string packedDataPath
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(m_PackedDataPath))
+                {
+                    m_PackedDataPath = dataFolder + "/" + NoHotUpdateDataZipName;
+                }
+                return m_PackedDataPath;
+            }
+        }
+
+        /// <summary>
+        /// 打包后的数据文件路径(非热更数据压缩包)
+        /// </summary>
+        private static string m_GUPackedDataPath = string.Empty;
+        /// <summary>
+        /// 热更的数据压缩包
+        /// </summary>
+        public static string guPackedDataPath
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(m_GUPackedDataPath))
+                {
+                    m_GUPackedDataPath = dataFolder + "/" + HotUpdateDataZipName;
+                }
+                return m_GUPackedDataPath;
+            }
+        }
+
+        /// <summary>
+        /// 数据zip目录
+        /// </summary>
+        public static string dataFolder
+        {
+            get { return Application.streamingAssetsPath + "/" + dataFolderName; }
+        }
+
+        /// <summary>
+        /// 存放bundle的文件夹名
+        /// </summary>
+        public static string assetBundleFolder
+        {
+            get { return "AssetBundles"; }
+        }
+
+        /// <summary>
+        /// bundle后缀
+        /// </summary>
+        public static string assetBundleExtension
+        {
+            get { return ".unity3d"; }
+        }
+
+        /// <summary>
+        /// bundle表命名
+        /// </summary>
+        public static string bundleTableFileName
+        {
+            get { return "BundleTable.json"; }
+        }
+
+        /// <summary>
+        /// 依赖bundle表
+        /// </summary>
+        public static string depBundleTableFileName
+        {
+            get { return "DepBundleTable.json"; }
+        }
+
+        /// <summary>
+        /// 常驻内存列表
+        /// </summary>
+        public static string residentBundleTableName
+        {
+            get { return "ResidentBundles.json"; }
+        }
+
+        /// <summary>
+        /// 指定的Bundle外部路径
+        /// </summary>
+        private static string m_ExternalBundlePath = string.Empty;
+        public static string externalBundlePath
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(m_ExternalBundlePath))
+                {
+                    m_ExternalBundlePath = System.IO.Path.Combine(externalFilePath, assetBundleFolder);
+                }
+                return m_ExternalBundlePath;
+            }
+        }
+
+#if UNITY_EDITOR
+        /// <summary>
+        /// 指定的Bundle外部路径
+        /// </summary>
+        private static string m_EditorPath = string.Empty;
+        public static string editorPath
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(m_EditorPath))
+                {
+                    m_EditorPath = Application.dataPath + "/../ExtraResources";
+                }
+                return m_EditorPath;
+            }
+        }
+
+        /// <summary>
+        /// 指定的Bundle外部路径
+        /// </summary>
+        private static string m_EditorBundlePath = string.Empty;
+        public static string editorBundlePath
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(m_EditorBundlePath))
+                {
+                    var buildTarget = UnityEditor.EditorUserBuildSettings.activeBuildTarget;
+                    m_EditorBundlePath = string.Format("{0}/Bundle/{1}/{2}", editorPath, buildTarget, assetBundleFolder);
+                }
+                return m_EditorBundlePath;
+            }
+        }
+
+        /// <summary>
+        /// 指定的热更的GUData外部路径
+        /// </summary>
+        private static string m_ExternalEditorGUDataPath = string.Empty;
+        public static string externalEditorGUDataPath
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(m_ExternalEditorGUDataPath))
+                {
+                    m_ExternalEditorGUDataPath = System.IO.Path.Combine(editorPath, "HotUpdata_GUData");
+                }
+                return m_ExternalEditorGUDataPath;
+            }
+        }
+#endif
+    }
+}

@@ -1,0 +1,397 @@
+﻿#if UNITY_EDITOR
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
+using System.Text;
+using UnityEngine;
+using System.IO;
+
+namespace GStore
+{
+    public class SvnTool
+    {
+        private static string batPath = string.Format("{0}/GStore/Base/Scripts/Svn/SvnEditor/Bat/", Application.dataPath);
+        private static string shellPath = string.Format("{0}/GStore/Base/Scripts/Svn/SvnEditor/Shell/", Application.dataPath);
+
+        //bat脚本
+        private static string commitWin = batPath + "svn_commit_all.bat";
+        private static string checkoutWin = batPath + "svn_checkout.bat";
+        private static string checkoutToVersionWin = batPath + "svn_checkout_to_version.bat";
+        private static string updateWin = batPath + "svn_update.bat";
+        private static string revertAllWin = batPath + "svn_revert_all.bat";
+        private static string revertWin = batPath + "svn_revert.bat";
+        private static string updateToVersionWin = batPath + "svn_update_to_version.bat";
+        private static string importWin = batPath + "svn_import.bat";
+        private static string exportDiffWin = batPath + "svn_export_diff.bat";
+
+        //shell脚本
+        private static string commitMac = shellPath + "svn_commit_all.sh";
+        private static string checkoutMac = shellPath + "svn_checkout.sh";
+        private static string checkoutToVersionMac = shellPath + "svn_checkout_to_version.sh";
+        private static string updateMac = shellPath + "svn_udpate.sh";
+        private static string revertAllMac = shellPath + "svn_revert_all.sh";
+        private static string revertMac = shellPath + "svn_revert.sh";
+        private static string updateToVersionMac = shellPath + "svn_update_to_version.sh";
+        private static string importMac = shellPath + "svn_import.sh";
+        private static string exportDiffMac = batPath + "svn_export_diff.sh";
+
+        public static bool SvnCommit(string localPath, string message = "AutoCommit", string userName = null, string password = null)
+        {
+            bool isSuccess = false;
+            if (userName != null && password != null)
+            {
+                string[] args = new string[] { localPath, message, userName, password };
+                if (Application.platform == RuntimePlatform.WindowsEditor)
+                {
+                    isSuccess = ProcessCommand(commitWin, args, false);
+                }
+                else if (Application.platform == RuntimePlatform.OSXEditor)
+                {
+                    isSuccess = ProcessCommand(commitMac, args);
+                }
+            }
+            else
+            {
+                string[] args = new string[] { localPath, message };
+                if (Application.platform == RuntimePlatform.WindowsEditor)
+                {
+                    isSuccess = ProcessCommand(commitWin, args, false);
+                }
+                else if (Application.platform == RuntimePlatform.OSXEditor)
+                {
+                    isSuccess = ProcessCommand(commitMac, args);
+                }
+            }
+            return isSuccess;
+        }
+
+        public static bool SvnCheckOut(string url, string localPath, string userName = null, string password = null)
+        {
+            bool isSuccess = false;
+            if (userName != null && password != null)
+            {
+                string[] args = new string[] { url, localPath, userName, password };
+                if (Application.platform == RuntimePlatform.WindowsEditor)
+                {
+                    isSuccess = ProcessCommand(checkoutWin, args, false);
+                }
+                else if (Application.platform == RuntimePlatform.OSXEditor)
+                {
+                    isSuccess = ProcessCommand(checkoutMac, args);
+                }
+            }
+            else
+            {
+                string[] args = new string[] { url, localPath };
+                if (Application.platform == RuntimePlatform.WindowsEditor)
+                {
+                    isSuccess = ProcessCommand(checkoutWin, args, false);
+                }
+                else if (Application.platform == RuntimePlatform.OSXEditor)
+                {
+                    isSuccess = ProcessCommand(checkoutMac, args);
+                }
+            }
+
+            return isSuccess;
+        }
+
+        public static bool SvnCheckOutToVersion(string url, string localPath, long version, string userName = null, string password = null)
+        {
+            bool isSuccess = false;
+            if (userName != null && password != null)
+            {
+                string[] args = new string[] { url, localPath, version.ToString(), userName, password };
+                if (Application.platform == RuntimePlatform.WindowsEditor)
+                {
+                    isSuccess = ProcessCommand(checkoutToVersionWin, args, false);
+                }
+                else if (Application.platform == RuntimePlatform.OSXEditor)
+                {
+                    isSuccess = ProcessCommand(checkoutToVersionMac, args);
+                }
+            }
+            else
+            {
+                string[] args = new string[] { url, localPath, version.ToString() };
+                if (Application.platform == RuntimePlatform.WindowsEditor)
+                {
+                    isSuccess = ProcessCommand(checkoutToVersionWin, args, false);
+                }
+                else if (Application.platform == RuntimePlatform.OSXEditor)
+                {
+                    isSuccess = ProcessCommand(checkoutToVersionMac, args);
+                }
+            }
+
+            return isSuccess;
+        }
+
+        public static bool SvnUpdate(string localPath, string userName = null, string password = null)
+        {
+            bool isSuccess = false;
+            if (userName != null && password != null)
+            {
+                string[] args = new string[] { localPath, userName, password };
+                if (Application.platform == RuntimePlatform.WindowsEditor)
+                {
+                    isSuccess = ProcessCommand(updateWin, args, false);
+                }
+                else if (Application.platform == RuntimePlatform.OSXEditor)
+                {
+                    isSuccess = ProcessCommand(updateMac, args);
+                }
+            }
+            else
+            {
+                string[] args = new string[] { localPath };
+                if (Application.platform == RuntimePlatform.WindowsEditor)
+                {
+                    isSuccess = ProcessCommand(updateWin, args, false);
+                }
+                else if (Application.platform == RuntimePlatform.OSXEditor)
+                {
+                    isSuccess = ProcessCommand(updateMac, args);
+                }
+            }
+            return isSuccess;
+        }
+
+        public static bool SvnRevert(string localPath, string userName = null, string password = null)
+        {
+            bool isSuccess = false;
+            if (userName != null && password != null)
+            {
+                string[] args = new string[] { localPath, userName, password };
+                if (Application.platform == RuntimePlatform.WindowsEditor)
+                {
+                    isSuccess = ProcessCommand(revertWin, args, false);
+                }
+                else if (Application.platform == RuntimePlatform.OSXEditor)
+                {
+                    isSuccess = ProcessCommand(revertMac, args);
+                }
+            }
+            else
+            {
+                string[] args = new string[] { localPath };
+                if (Application.platform == RuntimePlatform.WindowsEditor)
+                {
+                    isSuccess = ProcessCommand(revertWin, args, false);
+                }
+                else if (Application.platform == RuntimePlatform.OSXEditor)
+                {
+                    isSuccess = ProcessCommand(revertMac, args);
+                }
+            }
+            return isSuccess;
+        }
+
+        public static bool SvnRevertAndDel(string localPath, string userName = null, string password = null)
+        {
+            bool isSuccess = false;
+            if (userName != null && password != null)
+            {
+                string[] args = new string[] { localPath, userName, password };
+                if (Application.platform == RuntimePlatform.WindowsEditor)
+                {
+                    isSuccess = ProcessCommand(revertAllWin, args, false);
+                }
+                else if (Application.platform == RuntimePlatform.OSXEditor)
+                {
+                    isSuccess = ProcessCommand(revertAllMac, args);
+                }
+            }
+            else
+            {
+                string[] args = new string[] { localPath };
+                if (Application.platform == RuntimePlatform.WindowsEditor)
+                {
+                    isSuccess = ProcessCommand(revertAllWin, args, false);
+                }
+                else if (Application.platform == RuntimePlatform.OSXEditor)
+                {
+                    isSuccess = ProcessCommand(revertAllMac, args);
+                }
+            }
+            return isSuccess;
+        }
+
+        public static bool SvnUpdateToversion(string localPath, long version, string userName = null, string password = null)
+        {
+            bool isSuccess = false;
+            if (userName != null && password != null)
+            {
+                string[] args = new string[] { localPath, version.ToString(), userName, password };
+                if (Application.platform == RuntimePlatform.WindowsEditor)
+                {
+                    isSuccess = ProcessCommand(updateToVersionWin, args, false);
+                }
+                else if (Application.platform == RuntimePlatform.OSXEditor)
+                {
+                    isSuccess = ProcessCommand(updateToVersionMac, args);
+                }
+            }
+            else
+            {
+                string[] args = new string[] { localPath, version.ToString() };
+                if (Application.platform == RuntimePlatform.WindowsEditor)
+                {
+                    isSuccess = ProcessCommand(updateToVersionWin, args, false);
+                }
+                else if (Application.platform == RuntimePlatform.OSXEditor)
+                {
+                    isSuccess = ProcessCommand(updateToVersionMac, args);
+                }
+            }
+            return isSuccess;
+        }
+
+        public static bool SvnExportDiff(string remotePath, int baseVersion, int targetVersion, string exportPath, string userName = null, string password = null)
+        {
+            string[] args;
+            string command = Application.platform == RuntimePlatform.WindowsEditor ? exportDiffWin : exportDiffWin;
+            if (userName != null && password != null)
+            {
+                args = new string[] { remotePath, baseVersion.ToString(), targetVersion.ToString(), exportPath, userName, password };
+            }
+            else
+            {
+                args = new string[] { remotePath, baseVersion.ToString(), targetVersion.ToString(), exportPath };
+            }
+            return ProcessCommand(command, args);
+        }
+
+        public static bool SvnImport(string localPath, string url, string message = "自动Import", string userName = null, string password = null)
+        {
+            bool isSuccess = false;
+            if (userName != null && password != null)
+            {
+                string[] args = new string[] { localPath, url, message, userName, password };
+                if (Application.platform == RuntimePlatform.WindowsEditor)
+                {
+                    isSuccess = ProcessCommand(importWin, args, false);
+                }
+                else if (Application.platform == RuntimePlatform.OSXEditor)
+                {
+                    isSuccess = ProcessCommand(importMac, args);
+                }
+            }
+            else
+            {
+                string[] args = new string[] { localPath, url, message };
+                if (Application.platform == RuntimePlatform.WindowsEditor)
+                {
+                    isSuccess = ProcessCommand(importWin, args, false);
+                }
+                else if (Application.platform == RuntimePlatform.OSXEditor)
+                {
+                    isSuccess = ProcessCommand(importMac, args);
+                }
+            }
+
+            return isSuccess;
+        }
+
+        /// <summary>
+        /// 执行shell命令，调脚本必须_useShellExecute=true;
+        /// </summary>
+        /// <param name="_shell"></param>
+        /// <param name="_args"></param>
+        /// <returns></returns>
+        public static bool ProcessCommand(string _shell, string[] _args = null, bool useShellExecute = true, DataReceivedEventHandler errorHandler = null, DataReceivedEventHandler outputHandler = null)
+        {
+            bool isSuccess = false;
+            int _exit_code = 0;
+
+            System.Text.StringBuilder _sb = new System.Text.StringBuilder();
+            if (_args != null)
+            {
+                for (int i = 0; i < _args.Length; i++)
+                {
+                    _sb.Append("\"" + _args[i] + "\"");
+                    _sb.Append(" ");
+                }
+            }
+
+            FileInfo file = new FileInfo(_shell);
+            Process _process = new Process();
+            ProcessStartInfo _start_info = _process.StartInfo;
+            _start_info.FileName = _shell;
+            _start_info.Arguments = _sb.ToString();
+            _start_info.WorkingDirectory = file.Directory.FullName;
+            _start_info.CreateNoWindow = !useShellExecute;
+            _start_info.ErrorDialog = true;
+            _start_info.UseShellExecute = useShellExecute;
+            if (_start_info.UseShellExecute)
+            {
+                _start_info.RedirectStandardOutput = false;
+                _start_info.RedirectStandardError = false;
+                _start_info.RedirectStandardInput = false;
+            }
+            else
+            {
+                _start_info.RedirectStandardOutput = true;
+                _start_info.RedirectStandardError = true;
+                _start_info.RedirectStandardInput = true;
+                _start_info.StandardOutputEncoding = Encoding.Default;
+                _start_info.StandardErrorEncoding = Encoding.Default;
+            }
+
+            if (_start_info.UseShellExecute == false)
+            {
+                if (errorHandler == null) errorHandler = OnErrorDataReceived;
+                if (outputHandler == null) outputHandler = OnOutputDataReceived;
+
+                _process.ErrorDataReceived += errorHandler;
+                _process.OutputDataReceived += outputHandler;
+            }
+
+            _process.Start();
+
+            if (_start_info.UseShellExecute == false)
+            {
+                _process.BeginErrorReadLine();
+                _process.BeginOutputReadLine();
+            }
+
+            //等待shell脚本执行完毕
+            _process.WaitForExit();
+            _exit_code = _process.ExitCode;
+            _process.Close();
+
+            if (_exit_code != 0)
+            {
+                Exception e = new Exception("execute " + _shell + " failed! exitCode = " + _exit_code);
+                throw e;
+            }
+            else
+            {
+                isSuccess = true;
+                UnityEngine.Debug.Log(string.Format("执行脚本成功 {0}", _shell));
+            }
+            return isSuccess;
+        }
+
+        public static void OnErrorDataReceived(object sender, DataReceivedEventArgs e)
+        {
+            if (string.IsNullOrEmpty(e.Data))
+            {
+                return;
+            }
+            UnityEngine.Debug.LogError(e.Data);
+        }
+
+        public static void OnOutputDataReceived(object sender, DataReceivedEventArgs e)
+        {
+            if (string.IsNullOrEmpty(e.Data))
+            {
+                return;
+            }
+            UnityEngine.Debug.Log(e.Data);
+        }
+    }
+}
+#endif
+
