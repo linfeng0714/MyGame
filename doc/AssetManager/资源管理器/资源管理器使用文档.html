@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>资源管理器使用文档</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<style type="text/css">
+/* GitHub stylesheet for MarkdownPad (http://markdownpad.com) */
+/* Author: Nicolas Hery - http://nicolashery.com */
+/* Version: b13fe65ca28d2e568c6ed5d7f06581183df8f2ff */
+/* Source: https://github.com/nicolahery/markdownpad-github */
+
+/* RESET
+=============================================================================*/
+
+html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary, time, mark, audio, video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+/* BODY
+=============================================================================*/
+
+body {
+  font-family: Helvetica, arial, freesans, clean, sans-serif;
+  font-size: 14px;
+  line-height: 1.6;
+  color: #333;
+  background-color: #fff;
+  padding: 20px;
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+body>*:first-child {
+  margin-top: 0 !important;
+}
+
+body>*:last-child {
+  margin-bottom: 0 !important;
+}
+
+/* BLOCKS
+=============================================================================*/
+
+p, blockquote, ul, ol, dl, table, pre {
+  margin: 15px 0;
+}
+
+/* HEADERS
+=============================================================================*/
+
+h1, h2, h3, h4, h5, h6 {
+  margin: 20px 0 10px;
+  padding: 0;
+  font-weight: bold;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1 tt, h1 code, h2 tt, h2 code, h3 tt, h3 code, h4 tt, h4 code, h5 tt, h5 code, h6 tt, h6 code {
+  font-size: inherit;
+}
+
+h1 {
+  font-size: 28px;
+  color: #000;
+}
+
+h2 {
+  font-size: 24px;
+  border-bottom: 1px solid #ccc;
+  color: #000;
+}
+
+h3 {
+  font-size: 18px;
+}
+
+h4 {
+  font-size: 16px;
+}
+
+h5 {
+  font-size: 14px;
+}
+
+h6 {
+  color: #777;
+  font-size: 14px;
+}
+
+body>h2:first-child, body>h1:first-child, body>h1:first-child+h2, body>h3:first-child, body>h4:first-child, body>h5:first-child, body>h6:first-child {
+  margin-top: 0;
+  padding-top: 0;
+}
+
+a:first-child h1, a:first-child h2, a:first-child h3, a:first-child h4, a:first-child h5, a:first-child h6 {
+  margin-top: 0;
+  padding-top: 0;
+}
+
+h1+p, h2+p, h3+p, h4+p, h5+p, h6+p {
+  margin-top: 10px;
+}
+
+/* LINKS
+=============================================================================*/
+
+a {
+  color: #4183C4;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* LISTS
+=============================================================================*/
+
+ul, ol {
+  padding-left: 30px;
+}
+
+ul li > :first-child, 
+ol li > :first-child, 
+ul li ul:first-of-type, 
+ol li ol:first-of-type, 
+ul li ol:first-of-type, 
+ol li ul:first-of-type {
+  margin-top: 0px;
+}
+
+ul ul, ul ol, ol ol, ol ul {
+  margin-bottom: 0;
+}
+
+dl {
+  padding: 0;
+}
+
+dl dt {
+  font-size: 14px;
+  font-weight: bold;
+  font-style: italic;
+  padding: 0;
+  margin: 15px 0 5px;
+}
+
+dl dt:first-child {
+  padding: 0;
+}
+
+dl dt>:first-child {
+  margin-top: 0px;
+}
+
+dl dt>:last-child {
+  margin-bottom: 0px;
+}
+
+dl dd {
+  margin: 0 0 15px;
+  padding: 0 15px;
+}
+
+dl dd>:first-child {
+  margin-top: 0px;
+}
+
+dl dd>:last-child {
+  margin-bottom: 0px;
+}
+
+/* CODE
+=============================================================================*/
+
+pre, code, tt {
+  font-size: 12px;
+  font-family: Consolas, "Liberation Mono", Courier, monospace;
+}
+
+code, tt {
+  margin: 0 0px;
+  padding: 0px 0px;
+  white-space: nowrap;
+  border: 1px solid #eaeaea;
+  background-color: #f8f8f8;
+  border-radius: 3px;
+}
+
+pre>code {
+  margin: 0;
+  padding: 0;
+  white-space: pre;
+  border: none;
+  background: transparent;
+}
+
+pre {
+  background-color: #f8f8f8;
+  border: 1px solid #ccc;
+  font-size: 13px;
+  line-height: 19px;
+  overflow: auto;
+  padding: 6px 10px;
+  border-radius: 3px;
+}
+
+pre code, pre tt {
+  background-color: transparent;
+  border: none;
+}
+
+kbd {
+    -moz-border-bottom-colors: none;
+    -moz-border-left-colors: none;
+    -moz-border-right-colors: none;
+    -moz-border-top-colors: none;
+    background-color: #DDDDDD;
+    background-image: linear-gradient(#F1F1F1, #DDDDDD);
+    background-repeat: repeat-x;
+    border-color: #DDDDDD #CCCCCC #CCCCCC #DDDDDD;
+    border-image: none;
+    border-radius: 2px 2px 2px 2px;
+    border-style: solid;
+    border-width: 1px;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    line-height: 10px;
+    padding: 1px 4px;
+}
+
+/* QUOTES
+=============================================================================*/
+
+blockquote {
+  border-left: 4px solid #DDD;
+  padding: 0 15px;
+  color: #777;
+}
+
+blockquote>:first-child {
+  margin-top: 0px;
+}
+
+blockquote>:last-child {
+  margin-bottom: 0px;
+}
+
+/* HORIZONTAL RULES
+=============================================================================*/
+
+hr {
+  clear: both;
+  margin: 15px 0;
+  height: 0px;
+  overflow: hidden;
+  border: none;
+  background: transparent;
+  border-bottom: 4px solid #ddd;
+  padding: 0;
+}
+
+/* TABLES
+=============================================================================*/
+table {
+	border-collapse: collapse;
+}
+
+table th {
+  font-weight: bold;
+}
+
+table th, table td {
+  border: 1px solid #ccc;
+  padding: 6px 13px;
+}
+
+table tr {
+  border-top: 1px solid #ccc;
+  background-color: #fff;
+}
+
+table tr:nth-child(2n) {
+  background-color: #f8f8f8;
+}
+
+/* IMAGES
+=============================================================================*/
+
+img {
+  max-width: 100%
+}
+</style>
+ <link rel="stylesheet" type="text/css" href="hightlight/styles/shCoreDefault.css">  
+<script type="text/javascript" src="hightlight/scripts/shCore.js"></script>  
+<script type="text/javascript" src="hightlight/scripts/shBrushCSharp.js"></script>
+<script type="text/javascript" src="hightlight/scripts/shBrushXml.js"></script>
+<script type="text/javascript" src="hightlight/scripts/shBrushLua.js"></script>
+<script type="text/javascript"> SyntaxHighlighter.all();  </script>
+<script type="text/javascript">SyntaxHighlighter.defaults['toolbar'] = false;</script>
+</head>
+<body>
+<h1>GStore - AssetManager使用文档</h1>
+<h2></h2>
+<ul>
+<li><a href="#-1">目录规范和资源命名</a></li>
+<li><a href="#0">资源打包方案</a></li>
+<li><a href="#1">接入资源管理器到项目中</a></li>
+<li><a href="#2">打包编辑器</a></li>
+<li><a href="#3">固定包编辑器</a></li>
+<li><a href="#4">固定数据编辑器</a></li>
+<li>
+<a href="#5">AssetBundle检查器</a>
+<ul>
+<li><a href="#5.1">消除资源冗余</a></li>
+</ul>
+</li>
+<li>
+<a href="#6">AssetBundle浏览器</a>
+<ul>
+<li><a href="#6.1">关于小包模式</a></li>
+</ul>
+</li>
+<li>
+<a href="#7">Shader变体丢失的处理</a>
+<ul>
+<li><a href="#7.1">烘培场景光照异常</a> </li>
+</ul>
+</li>
+<li><a href="#8">资源管理器接口的使用</a></li>
+</ul>
+<p><span id="-1"></span></p>
+<h2>目录规范和资源命名</h2>
+<h3>目录规范</h3>
+<ul>
+<li><strong>Res</strong>：项目主要的资源目录，asset表中的所有资源都存放在这个目录，需要打AB的目录。</li>
+<li><strong>Resources</strong>：项目的固定资源，一定会打进包里的资源，比如资源更新界面的资源。</li>
+<li><strong>StreamingAssets</strong>：随包发布的资源，一般存放setup.xml，AssetBundles，Data，Lua等。</li>
+<li><strong>3Part</strong>：存放第三方Unity插件。</li>
+<li><strong>Plugins</strong>：存放封装好的DLL或其它平台的插件代码。</li>
+<li><strong>Scenes</strong>：存放所有场景文件。</li>
+<li><strong>Scripts</strong>：项目代码。</li>
+</ul>
+<p><img src="images/图片1.png" alt="avatar" /></p>
+<h4>1. 按逻辑分类</h4>
+<pre><code>逻辑分类可以有多级，比如角色下面可以继续分出英雄类和怪物类。
+</code></pre>
+
+<h4>2. 按资源分类</h4>
+<pre><code>如果最后一级逻辑分类只有一种类型的资源文件，可以省略类型分类。
+</code></pre>
+
+<h3>资源命名</h3>
+<ul>
+<li>资源命名规则：逻辑类型+逻辑编号+资源类型缩写+资源编号(可选)。如：hero51020p#201020</li>
+<li>资源类型缩写：p代表prefab，m代表material，t代表texture，f代表fbx。</li>
+<li>大小写限定：文件夹统一首字母大写，文件名统一小写，如有需要，可用“_”号分隔命名。</li>
+<li>禁止使用中文字符。</li>
+</ul>
+<p><span id="0"></span></p>
+<h2>资源打包方案</h2>
+<p>Unity引擎主要有两个用于打包资源的目录</p>
+<ul>
+<li><strong><em>Resources</em></strong>：存放在Resources目录的资源及其<strong>依赖资源<strong>，都会被Unity</strong>导入处理</strong>后打包到最终的游戏包中。</li>
+<li><strong><em>StreamingAssets</em></strong>：存放在StreamingAssets目录的资源，都会<strong>原封不动</strong>地拷贝到最终的游戏包中。</li>
+</ul>
+<p>Resources模式虽然使用简单，但是存在着无法热更、无法增量打包、资源过多时增加游戏启动时长等缺点。而StreamingAssets目录需要配合AssetBundle使用获取通过File接口读取解析资源，并且由于StreamingAssets目录对资源不做任何处理，放入其中的资源必须是经过压缩的，否则会有很大的包体占用。</p>
+<p>由于Resources目录除了使用方便以外有诸多缺点，不适应后期发布阶段的需求，为了避免发布时再切换资源目录的操作，我们从一开始就要将所有资源使用StreamingAssets目录打包。</p>
+<p>游戏中不同的资源类型，我们采用不同的方式打包到最终的游戏包中。</p>
+<h3>1.Unity资源</h3>
+<p>游戏的主要资源，如模型、贴图、材质、prefab、shader等，这类必须通过Unity资源接口加载的资源全部打包成AssetBundle，存放在StreamingAssets目录中。</p>
+<h3>2.数据文件</h3>
+<p>游戏的配置文件，如数据表、AI数据、各种编辑器产生的配置数据，这类数据集中打包成Data.zip，存放在StreamingAssets目录，运行时解压到持久化目录，再通过File接口读取二进制自行解析。这样做能够集中管理数据文件，便于加密和热更，而且压缩率要比打包成AssetBundle高。</p>
+<h3>3.Lua文件</h3>
+<p>Lua文件由于不需要编译，所以可以和数据文件采用同样的打包方式。</p>
+<h3>4.视频文件</h3>
+<p>视频文件通常用于游戏的开场动画，由于视频文件通常都是已压缩的格式，Unity也支持直接读取视频文件而不必通过AssetBundle，所以视频文件直接放在StreamingAssets目录即可。</p>
+<h3>5.音频文件</h3>
+<p>如果项目使用Unity内置的音频播放系统，那么音频文件可以导入成Unity资源，使用AssetBundle的方式打包；如果项目使用类似Wwise的音频引擎，那么可以将该引擎导出的音频数据直接存放在StreamingAssets中。</p>
+<p><span id="1"></span></p>
+<h2>接入资源管理器到项目中</h2>
+<p>资源管理器包含编辑器和运行时两部分的内容。GStore/AssetManager中存放着该模块的代码，项目组不需要改动这部分代码。而GStore-Custom/AssetManager中则存放该模块的一些配置代码，接入模块时需要修改这部分代码。</p>
+<p>编辑器部分：</p>
+<p><strong>AssetBundleBuilderInitializer.cs</strong></p>
+<script type="syntaxhighlighter" class="brush: csharp;">
+using System.Collections.Generic;
+
+/// <summary>
+/// AssetBundle打包工具初始化 - 此脚本每次代码编译完成都会自动初始化
+/// </summary>
+[UnityEditor.InitializeOnLoad]
+public static class AssetBundleBuilderInitializer
+{
+    static AssetBundleBuilderInitializer()
+    {
+        //安装表格数据读取方法
+        CSVHelper.loadBytes = (path) =>
+        {
+            return GStore.AssetManager.AssetManager.Instance.LoadFileData(path);
+        };
+
+        //设置资源表的适配器
+        BundleEditor.AssetInfo.getAssetTable = () =>
+        {
+            List<BundleEditor.AssetInfo> assetInfoList = null;
+
+            CSVAssets.Load();
+
+            assetInfoList = new List<BundleEditor.AssetInfo>(CSVAssets.data_list.Count);
+            foreach (var kvp in CSVAssets.data_list)
+            {
+                CSVAssets csv = kvp.Value;
+                BundleEditor.AssetInfo assetInfo = new BundleEditor.AssetInfo(csv.id, csv.dir, csv.name, csv.suffix);
+                assetInfoList.Add(assetInfo);
+            }
+
+            CSVAssets.UnLoad();
+
+            return assetInfoList;
+        };
+
+        //初始化打包工具
+        BuildTools.enableSmallPack = false;
+        BuildTools.enableHotUpdate = false;
+        BuildTools.Init();
+    }
+}
+</script>
+<p>运行时部分：</p>
+<p><strong>AssetManagerSetup.cs</strong></p>
+<script type="syntaxhighlighter" class="brush: csharp;">
+using GStore.AssetManager;
+using System.Collections.Generic;
+
+/// <summary>
+/// 安装资源管理器
+/// </summary>
+public static class AssetManagerSetup
+{
+    /// <summary>
+    /// 安装各种方法
+    /// </summary>
+    static public void Setup()
+    {
+        //安装表格数据读取方法
+        CSVHelper.loadBytes = (path) =>
+        {
+            return AssetManager.Instance.LoadFileData(path);
+        };
+
+        //设置资源表的适配器
+        AssetInfo.getAssetTable = () =>
+        {
+            List<AssetInfo> assetInfoList = null;
+
+            CSVAssets.Load();
+
+            assetInfoList = new List<AssetInfo>(CSVAssets.data_list.Count);
+            foreach (var kvp in CSVAssets.data_list)
+            {
+                CSVAssets csv = kvp.Value;
+                AssetInfo assetInfo = new AssetInfo(csv.id, csv.dir, csv.name, csv.suffix);
+                assetInfoList.Add(assetInfo);
+            }
+
+            CSVAssets.UnLoad();
+
+            return assetInfoList;
+        };
+    }
+}
+</script>
+<p>对接代码主要是资源表的对接，编辑器部分对接完即可运行。而运行时代码还需在游戏初始化时调用AssetManagerSetup.Setup()和AssetManager.Instance.Init()。</p>
+<p><span id="2"></span></p>
+<h2>打包编辑器</h2>
+<p>通过点击Unity界面上的菜单<strong>GStore</strong> -&gt; <strong>Build</strong> -&gt; <strong>AssetBundleBuilder</strong>，可以打开打包编辑器。</p>
+<p><img src="images/图片3.png" alt="avatar" /></p>
+<p>这个界面主要有两个用途，一是对打包策略进行一些配置：</p>
+<ul>
+<li><strong>AssetBundle输出路径</strong>：相对于项目工程的路径，通常没有修改的必要。</li>
+<li><strong>AssetBundle后缀名</strong>：默认.unity3d, 如果修改，运行时代码也需要对应修改。</li>
+<li><strong>是否合并共享包</strong>：开启后，会根据大小合并共享资源打包，好处是可以调节粒度，简化依赖关系，缺点是文件大小变化可能会引起多个共享包需要重打，影响热更的数据量。建议开启。</li>
+<li><strong>粒度限制</strong>：仅在开启合并共享包时生效，合并共享包时会参考这个数值控制每个共享包的大小。粒度主要影响IO性能和热更时的流量，推荐值1024.</li>
+</ul>
+<p>第二个用途是在此界面进行一些打包操作，可以单步执行也可以一键出包，方便本地打包测试，接入云构建时，云构建会调用一键出包接口完成出包。</p>
+<p><span id="3"></span></p>
+<h2>固定包编辑器</h2>
+<p><img src="images/图片4.png" alt="avatar" /></p>
+<p>固定包配置可以将资源目录下的一些目录添加到打包策略中，主要有以下几个作用：</p>
+<ul>
+<li>使不在asset表中的资源可以被打包成AssetBundle</li>
+<li>支持通过路径加载资源</li>
+<li>支持对一个目录执行LoadAllAsset操作</li>
+<li>控制目录中的资源是否要合并成一个AssetBundle</li>
+</ul>
+<p><em>注意：DummyMaterial目录是打包策略用于<a href="#7">Shader变体丢失的处理</a>的目录，固定包配置中至少要保留这个目录。</em></p>
+<p><span id="4"></span></p>
+<h2>内置数据编辑器</h2>
+<p><img src="images/图片5.png" alt="avatar" /></p>
+<p>由于前面我们将所有的数据文件压缩到StreamingAssets存放，那么游戏运行时需要先解压才能开始读取数据表，但是实际上很可能游戏在解压数据前就需要访问数据表了，所以这部分数据表需要特殊处理一下，最终采用的方案是，需要提前读取的数据文件，通过在此界面配置，打包时会复制到Resources目录，确保即使数据未解压也仍有内置的数据可读，由于加载策略中，Resources的优先级最低，所以当数据解压后或者热更后，游戏就不会读取到内置数据了。</p>
+<p><span id="5"></span></p>
+<h2>AssetBundle检查窗口</h2>
+<p><img src="images/图片6.png" alt="avatar" /></p>
+<p>这个界面用于分析打包后的AssetBundle的资源分布和依赖情况，主要用于排查AssetBundle中是否有资源冗余打包的情况。</p>
+<p>使用步骤：</p>
+<ol>
+<li>首先需要打包AssetBundle。</li>
+<li>点击“<strong>AssetBundle检查</strong>”按钮，浏览到AssetBundle的输出目录，确定。</li>
+<li>等待分析进度条，这一步目前耗时长，有待优化。</li>
+<li>分析完毕后会生成报告并自动打开报告。</li>
+</ol>
+<p><span id="5.1"></span></p>
+<h3>消除资源冗余</h3>
+<p>我们通过依赖分析进行打包的策略避免了因为assetBundleName设置不当导致项目资源被冗余打包的问题。但是，仍有一些情况是打包策略解决不了的冗余情况:</p>
+<h4>Unity<strong>内置资源</strong>的冗余。</h4>
+<p>由于内置资源无法通过设置assetBundleName来独立打包，那么当内置资源有多处引用时，就会被重复打入多个AssetBundle中，造成冗余。</p>
+<p>解决方法：</p>
+<ol>
+<li>通过AssetBundle检查器可以查看到内置资源的冗余，通常是诸如UISprite、Default-Material、内置Shader等。</li>
+<li>展开含有冗余资源的AssetBundle，可以看到依赖内置资源的资源，修改工程中的该资源，移除对该资源的引用或者替换成项目中的资源。</li>
+<li>对于一些仅用于发射子粒子系统，而本身不需要渲染的粒子系统，应该关闭渲染并且删除上面绑定的默认材质。</li>
+<li>如果确实要使用内置Shader，可以Unity官网下载对应版本的Shader代码，放入工程中会自动关联。</li>
+<li>关于FBX中有默认材质的引用的问题，打包工具做了一些特殊处理来消除冗余。</li>
+</ol>
+<h4>Sprite同时作为Texture使用造成冗余。</h4>
+<p>在实际使用中发现，当一些贴图同时作为Sprite和Texture被其它资源引用时，贴图本身设置了assetBundleName，打包AssetBundle后发现，引用Sprite的资源能正确处理依赖关系没有冗余，而引用Texture的资源包都冗余了一张目标贴图。</p>
+<p>目前认为这是Unity打包的一个bug，assetBundleName的设置仅应用在Sprite上而没有应用Texture在对象上。</p>
+<p>解决方法：</p>
+<p>目前回避这个问题的方法是一张图设置成Sprite就不要再用作Texture，实在需要，则复制一张图仅做Texture使用。 </p>
+<p><span id="6"></span></p>
+<h2>AssetBundle浏览器</h2>
+<p><img src="images/图片7.png" alt="avatar" /></p>
+<p>这个界面直接集成了Unity官方开源的<a href="https://github.com/Unity-Technologies/AssetBundles-Browser">AssetBundles-Browser</a>，相比AssetBundle检查窗口，这个可以在打包前浏览各个AssetBundle的资源，更加方便，不过排查冗余资源的功能，还是AssetBundle检查器通过分析打包后的AssetBundle更加准确。</p>
+<p>我们在官方版本上还做了一些扩展，加上标识“<strong>常驻内存</strong>”和“<strong>小包</strong>”的功能，标注了常驻内存的AssetBundle，在游戏过程中即使切场景也不会卸载，通常用于shader和字体的AssetBundle。而标注小包则用于小包模式。</p>
+<p><span id="6.1"></span></p>
+<h3>小包模式</h3>
+<p>一方面，对于移动平台来说，有些渠道对游戏的包体大小有限制，一般来说，首包越小的游戏在推广上更有优势。另一方面，随着手游产品越来越重度和追求高品质，包体随之越来越大。为了处理这种矛盾，打包管理器支持小包模式。</p>
+<p>小包模式指的时候打包的时候只包含最低限度能运行游戏的资源，其它资源进入游戏后再通过网络下载或者按需下载，从而降低首包大小和兼顾游戏品质。</p>
+<p>小包模式的配置：</p>
+<ol>
+<li>在AssetBundle浏览器中找到首包需要包含的AssetBundle，通常是字体、Shader、初始化界面等，将其打勾标注成小包。<em>注意，标识了小包的AssetBundle，其依赖的AssetBundle不管有没有标注都会自动打包进去。</em></li>
+<li>标注完保存配置，编辑器运行AssetBundle小包模式，测试是否能够顺利进入游戏到达下载资源包的流程，如提示加载AssetBundle失败，则根据提示回到第一步继续标注缺失的资源，直至能够正常进入流程为止。</li>
+</ol>
+<p><span id="7"></span></p>
+<h2>Shader变体丢失的处理</h2>
+<p>如果打包AssetBundle后，发现有材质显示异常，通常是因为Shader的变体被剥离了。解决办法是新建一个包含所需变体的材质或者ShaderVariantsCollection，放置到Assets/Res/DummyMaterial目录，打包工具会自动处理Shader变体的生成。</p>
+<p>这里推荐使用ShaderVariantsCollection，通过Unity编辑器运行游戏一段时间，即可收集到绝大部分需要使用到的变体。</p>
+<p><span id="7.1"></span></p>
+<h3>烘培场景光照异常</h3>
+<p>Unity默认按照BuildSetting和各级Resources目录中用到的资源来自动剥离没有使用到的代码和shader，而使用AssetBundle模式时，Unity无法确定这些资源是否会用到，按照上面的规则会认为没有用到，从而错误的剥离掉一些信息。</p>
+<p>如果打包AssetBundle后，发现场景灯光显示异常，则很可能是烘培信息被剥离了，解决方法如下：</p>
+<ol>
+<li>
+<p>打开一个烘培过的场景</p>
+</li>
+<li>
+<p>打开GraphicSettings：</p>
+</li>
+<li>
+<p>点击Import From Current Scene。会根据当前场景的烘培设置勾选可以剥离的信息。</p>
+</li>
+<li>
+<p>提交GraphicSettings的修改。</p>
+</li>
+</ol>
+<p><img src="images/图片8.png" alt="avatar" /></p>
+<p><span id="8"></span></p>
+<h2>资源管理器接口的使用</h2>
+<p>运行时统一通过GStore.AssetManager.AssetManager提供的接口加载资源。</p>
+<h3>资源管理器生命周期接口</h3>
+<h4>模块初始化</h4>
+<p>接口：</p>
+<p><code>public void Init()</code></p>
+<p>游戏初始化时调用一次。</p>
+<h4>通知场景开始</h4>
+<p>接口：</p>
+<p><code>public void DoStartScene()</code></p>
+<p>场景开始时调用。</p>
+<h4>通知场景退出</h4>
+<p>接口：</p>
+<p><code>public void DoExitScene()</code></p>
+<p>场景退出时调用。</p>
+<h3>资源加载部分</h3>
+<h4>同步加载资源</h4>
+<p>接口：</p>
+<p><code>public T LoadAsset&lt;T&gt;(int assetId) where T : Object</code></p>
+<p>示例：</p>
+<p><code>AudioClip clip = AssetManager.Instance.LoadAsset&lt;AudioClip&gt;(assetId);</code></p>
+<h4>异步加载资源</h4>
+<p>接口：</p>
+<p><code>public void LoadAssetAsync(int assetId, ObjectCallback callBack, IsObjectOldFunc func)</code></p>
+<p>示例：</p>
+<pre><code>AssetManager.Instance.LoadAssetAsync(assetId, delegate (Object obj, bool isOld)
+{
+    if (isOld == false &amp;&amp; gameObject != null)
+    {
+        GameObject effectPrefab = obj as GameObject;
+
+        if (effectPrefab == null)
+            return;
+
+        GameObject effectObject = AssetManager.Instance.Instantiate(effectPrefab);
+        mEffect3 = effectObject;
+
+        ShowHitEffect(iActive);
+    }
+}, CheckSceneName);
+</code></pre>
+
+<h4>加载Sprite</h4>
+<p>接口：</p>
+<p><code>public Sprite LoadSprite(int assetId, string spriteName = &quot;&quot;)</code></p>
+<p>示例：</p>
+<p><code>Sprite sprite = AssetManager.Instance.LoadSprite(assetId, name);</code></p>
+<h4>加载二进制数据</h4>
+<p>接口：</p>
+<p><code>public byte[] LoadFileData(string originName)</code></p>
+<p>示例：</p>
+<p><code>bytes = GStore.AssetManager.AssetManager.Instance.LoadFileData(resourcePath);</code></p>
+<h3>GameObject实例化与缓存</h3>
+<h4>从缓存池获取或实例化GameObject</h4>
+<p>接口：</p>
+<p><code>public GameObject Instantiate(GameObject prefab, Vector3 position, Quaternion rotation, bool getFromPool = true)</code></p>
+<p>示例：</p>
+<p><code>GameObject cloneUIObj = AssetManager.Instance.Instantiate(uiObj);</code></p>
+<h4>加载资源并实例化GameObject</h4>
+<p>接口：</p>
+<p><code>public GameObject LoadAssetAndInstantiate(int assetId, bool getFromPool = true)</code></p>
+<h4>异步加载资源并实例化GameObject</h4>
+<p>接口：</p>
+<p><code>public void LoadAssetAsyncAndInstantiate(int assetId, GameObjectCallback callBack, IsObjectOldFunc func, bool getFromPool = true)</code></p>
+<h4>提前生成缓存对象</h4>
+<p>接口：</p>
+<p><code>public void CacheObject(int assetId, int cacheNum = 1)</code></p>
+<h4>回收GameObject到缓存池</h4>
+<p>接口：</p>
+<p><code>public void RecycleGameObject(GameObject go)</code></p>
+
+</body>
+</html>
+<!-- This document was created with MarkdownPad, the Markdown editor for Windows (http://markdownpad.com) -->
